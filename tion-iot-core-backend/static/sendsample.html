@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Packet generator</title>
+	
+	<style>
+		.err { background-color: #ffb3b3;}
+		.ok { background-color:#9ae59a;}
+	</style>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+	<script type="text/javascript">// <![CDATA[
+		var sampleData = {
+			"protocol": "cityair",
+			"type": "static",
+			"node": 30,
+			"status": "ok",
+			"values": {
+				"LAT": 55.0084,
+				"LNG": 82.9357,
+				"ALT": 150,
+				"TMP": 27.6,
+				"HUM": 67.2,
+				"PRS": 760.1,
+				"SND": 52.4,
+				"LGT": 24758,
+				"PM2": 35.2,
+				"PM10": 12.4
+			}
+		}
+		/* global $ */
+		
+		var JSONTest = function() {
+			
+			sampleData.protocol = $('#protocol').val();
+			sampleData.type = $('#type').val();
+			sampleData.node = Number($('#node').val());
+			sampleData.status = $('#status').val();
+			
+			sampleData.values = {}
+			function setv(k) {
+				sampleData.values[k] = Number($('#'+k).val() ) ;
+			}
+			var keys = ["LAT", "LNG", "ALT", "TMP",	"HUM", "PRS", "SND","LGT", "PM2", "PM10"];
+			for(var i=0; i<keys.length; i++) setv(keys[i]);
+			
+	
+			//$('#result').html( JSON.stringify(sampleData, null, 4) );
+			
+			$.ajax({
+				url: "/postPacket?authkey="+$('#authkey').val(),
+				type: "POST",
+				data: JSON.stringify(sampleData),
+				contentType: 'application/json',
+				success: function(result) {
+					if( result.result==="ok") $('#result').attr('class', 'ok'); else $('#result').attr('class','err');
+					$("#result").html(JSON.stringify(result, null, 4) );
+					rnd();
+				},
+				
+				error: function(xhr, ajaxOptions, thrownError) {
+					$('#result').attr('class','err'); 
+					$("#result").html(xhr.status + " " + thrownError + " " + xhr.responseText);
+				}
+			});
+		};
+		
+		function rnd() {
+			$('#LAT').val( 55 + Math.random()*0.2-0.1) ;
+			$('#LNG').val( 83 + Math.random()*0.2-0.1 ) ;
+			$('#ALT').val( 150 + Math.random()*10) ;
+			$('#TMP').val( 20 + Math.random()*10 ) ;
+			$('#HUM').val( 10 + Math.random()*60 ) ;
+			$('#PRS').val( 750 + Math.random()*30 ) ;
+			$('#SND').val( 50 + Math.random()*5 ) ;
+			$('#LGT').val( 24000 + Math.floor(Math.random()*1000) ) ;
+			$('#PM2').val( 30 + Math.random()*10) ;
+			$('#PM10').val( 10 + Math.random()*5) ;
+		}
+	// ]]>
+	</script>
+</head>
+<body onload="rnd()">
+	<h1>Send requests</h1>
+	<p>
+	authkey:<input id="authkey" type="text" value="" />
+	</p>
+	<table style="height: 97px;" width="224">
+	<tr><td>protocol</td><td><input id="protocol" type="text" value="cityair" /></td></tr>
+	<tr><td>type</td><td><select id="type"><option value="static">static</option><option value="mobile" selected="selected">mobile</option></select></td></tr>
+	<tr><td>node</td><td><input id="node" type="number" value="30" /></td></tr>
+	<tr><td>status</td><td><input id="status" type="text" value="ok" /></td></tr>
+	<tr><td colspan=2>values</td></tr>
+	<tr><td>LAT</td><td><input id="LAT" type="number"/></td></tr>
+	<tr><td>LNG</td><td><input id="LNG" type="number"/></td></tr>
+	<tr><td>ALT</td><td><input id="ALT" type="number"/></td></tr>
+	<tr><td>TMP</td><td><input id="TMP" type="number"/></td></tr>
+	<tr><td>HUM</td><td><input id="HUM" type="number"/></td></tr>
+	<tr><td>PRS</td><td><input id="PRS" type="number"/></td></tr>
+	<tr><td>SND</td><td><input id="SND" type="number"/></td></tr>
+	<tr><td>LGT</td><td><input id="LGT" type="number"/></td></tr>
+	<tr><td>PM2</td><td><input id="PM2" type="number"/></td></tr>
+	<tr><td>PM10</td><td><input id="PM10" type="number"/></td></tr>
+	</table>
+	<p>
+		<button type="button" onclick="rnd()">Randomize values</button>&nbsp;
+		<button type="button" onclick="JSONTest()">POST</button>
+	</p>
+	<pre id="result">
+
+	</pre>
+</body>
+
+</html>

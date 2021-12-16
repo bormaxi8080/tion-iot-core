@@ -1,0 +1,30 @@
+{
+  "name": "tion-iot-core",
+  "version": "1.0.0",
+  "description": "TION backend for iot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/robotsaero/tion-iot-core-backend.git"
+  },
+  "keywords": [
+    "TION",
+    "iot",
+    "server",
+    "backend"
+  ],
+  "author": "positron96",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/robotsaero/tion-iot-core-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "dateformat": "^1.0.12",
+    "express": "^4.14.0",
+    "mongodb": "^2.1.18",
+    "morgan": "^1.7.0",
+    "winston": "^2.2.0"
+  }
+}

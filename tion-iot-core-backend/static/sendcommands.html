@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Settings generator</title>
+	
+	<style>
+		.err { background-color: #ffb3b3;}
+		.ok { background-color:#9ae59a;}
+	</style>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+	<script type="text/javascript">// <![CDATA[
+		
+		/* global $ */
+		
+		function JSONTest() {
+			var sampleData = {};
+			sampleData.protocol = $('#protocol').val();
+			sampleData.node = Number($('#node').val());
+			sampleData.commands = JSON.parse( '[' + $('#commands').val() + ']');
+
+			$.ajax({
+				url: "/postCommandBlock?authkey="+$('#authkey').val(),
+				type: "POST",
+				data: JSON.stringify(sampleData),
+				contentType: 'application/json',
+				success: function(result) {
+					if( result.result==="ok") $('#result').attr('class', 'ok'); else $('#result').attr('class','err');
+					$("#result").html(JSON.stringify(result, null, 4) );
+				},
+				
+				error: function(xhr, ajaxOptions, thrownError) {
+					$('#result').attr('class','err'); 
+					$("#result").html(xhr.status + " " + thrownError + " " + xhr.responseText);
+				}
+			});
+		};
+		
+
+	// ]]>
+	</script>
+</head>
+<body onload="rnd()">
+	<h1>Send settings</h1>
+	<p>
+	authkey:<input id="authkey" type="text" value="" />
+	</p>
+	<table style="height: 97px;" width="224">
+	<tr><td>protocol</td><td><input id="protocol" type="text" value="cityair" /></td></tr>
+	<tr><td>node</td><td><input id="node" type="number" value="30"/></td></tr>
+	<tr><td>commands</td><td><textarea id="commands" style="height:300px; width:200px" />
+{
+    "c": "changeParameter",
+    "p": ["name", "newValue"]
+},
+{  
+    "c": "writeByte2EEPROM",
+    "p": [1024, 127]
+}
+</textarea></td></tr>
+
+	</table>
+	<p>
+		<button type="button" onclick="JSONTest()">POST</button>
+	</p>
+	<pre id="result">
+
+	</pre>
+</body>
+
+</html>

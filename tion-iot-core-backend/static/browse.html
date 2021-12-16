@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Packet browser</title>
+	
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+	
+	<link rel="stylesheet" href="leaflet-plugins/locationfilter.css" />
+	<script src="leaflet-plugins/locationfilter.js"></script>
+	
+	<style>
+		.err { background-color: #ffb3b3;}
+		.ok { background-color:#9ae59a;}
+		
+		#mapid { height: 400px; width:700px;}
+		
+	</style>
+	
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">// <![CDATA[
+
+		/* global $ */
+		/* global L */
+		var jsonLayer;
+		var map;
+		var locationFilter;
+		
+		function init() {
+		    map = L.map('mapid').setView([55, 83], 10);
+		    L.tileLayer('https://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png', {
+            	maxZoom: 18,
+            	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+            			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            			'Imagery © <a href="http://www.thunderforest.com">Thunderforest</a>',
+            	id: 'examples.map-i875mjb7'
+        	}).addTo(map);
+        	
+        	locationFilter = new L.LocationFilter().addTo(map);
+		    
+		}
+		
+		function onEachPoint(feature, layer) {
+			layer.bindPopup( feature.properties.text );
+		}
+		
+		function JSONTest() {
+		    
+		    var fields = {authkey:$('#authkey').val(),  protocol:$('#protocol').val() };
+		    if($('#time').prop('checked')) {
+		        fields.before = new Date().toISOString();
+		        fields.after = new Date( new Date().getTime() - 6 * 1000*3600).toISOString(); // 6 hours ago
+		    }
+		    if($('#node').prop('checked')) {
+		        fields.node = Number( $('#nodeval').val() );
+		    }
+		    if($('#type').prop('checked')) {
+		        fields.type = $('#typeval').val() ;
+		    }
+		    if(locationFilter.isEnabled() ) {
+		        var bounds = locationFilter.getBounds();
+		        var loc = { 'lat1': bounds._northEast.lat, 'lat2':bounds._southWest.lat, 
+		                'lon1': bounds._northEast.lng, 'lon2':bounds._southWest.lng}
+		        $.extend(fields, loc);
+		    }
+		    
+
+			$.ajax({
+				url: "/getPackets",
+                data: fields,
+				contentType: 'application/json',
+				success: function(result) {
+					if( result.result==="ok") {
+					    $('#result').attr('class', 'ok'); 
+					    var payload = result.packets;
+					    result.packets = payload.length + " packets";
+					    $("#result").html(JSON.stringify(result, null, 4) );
+					    
+					    var ff = {type:'FeatureCollection', features:[]};
+					    for( var i=0; i<payload.length; i++) {
+					        
+					        var packet = payload[i];
+					        var loc = { type: "Point", coordinates: [packet.values.LNG, packet.values.LAT] };
+					        delete packet.values.LAT;
+					        delete packet.values.LNG;
+					        
+					        var props = "";
+					        for (var key in packet) {
+                                if (packet.hasOwnProperty(key)) {
+                                    var v = packet[key];
+                                    
+                                    if (key == 'values') {
+                                        var v2='';
+                                        for(var p in v) {v2 += p + ':'+Math.round(v[p])+'; '; }
+                                        v = v2;
+                                    }
+                                    props += key+ " = "+ v + "<br>";
+                                }
+                            }
+					        
+					        var feature = {type:'Feature', geometry:loc, properties:{text:props} };
+					        ff.features.push(feature);
+					    }
+					    if (jsonLayer) map.removeLayer(jsonLayer);
+					    jsonLayer = L.geoJson(ff, { onEachFeature: onEachPoint});
+					    jsonLayer.addTo(map);
+					    
+					    if(! locationFilter.isEnabled() && ff.features.length>0) { 
+					        map.fitBounds( jsonLayer.getBounds() );
+					    }
+					} else {
+					    $('#result').attr('class','err'); 
+					    $("#result").html(JSON.stringify(result, null, 4) );
+					    return;
+					}
+				},
+				
+				error: function(xhr, ajaxOptions, thrownError) {
+				    $('#result').attr('class','err'); 
+					$("#result").html(xhr.status + " " + thrownError + " " + xhr.responseText);
+				}
+			});
+		};
+		
+
+	// ]]>
+	</script>
+</head>
+<body onload="init()">
+	<h1>Browse packets</h1>
+	<p>
+	authkey:<input id="authkey" type="text" value="" />
+	</p>
+	<table>
+	<tr><td>protocol</td><td><input id="protocol" type="text" value="cityair" /></td></tr>
+	<tr><td><input id="node" type="checkbox">node</td><td><input id="nodeval" type="number" value="30" /></td></tr>
+	<tr><td><input id="type" type="checkbox">type</td><td><select id="typeval"><option value="static">static</option><option value="mobile">mobile</option></select></td></tr>
+	<tr><td><input id="time" type="checkbox">time</td><td><input id="after" type="text" value="filter latest 6hr" disabled="1" /></td></tr>
+	</table>
+    <div id="mapid"></div>
+	<p>
+		<!--button type="button" onclick="locationFilter.enalbe()">Area selector</button-->
+		<button type="button" onclick="JSONTest()">GET</button>
+	</p>
+	<pre id="result">
+
+	</pre>
+</body>
+
+</html>
