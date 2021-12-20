@@ -3,7 +3,7 @@ TION IoT Core Service
 
 ## TION IoT Core Server and REST API Node.js Project
 
-More information in this documents:
+For more information look at documentation:
 
 **- [TION IoT Core Server Documentation](TION_IoT_Core_Server_Documentation.pdf)**
 
