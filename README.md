@@ -1,5 +1,5 @@
 # tion-iot-core
-TION IoT Core Service
+TION IoT Core Service, all rights reserved
 
 ## TION IoT Core Server and REST API Node.js Project
 
