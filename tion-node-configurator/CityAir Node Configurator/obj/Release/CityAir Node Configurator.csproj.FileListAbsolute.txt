@@ -1,0 +1,9 @@
+C:\Users\egorbelikov\Documents\Visual Studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\bin\Release\CityAir Node Configurator.exe.config
+C:\Users\egorbelikov\Documents\Visual Studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\bin\Release\CityAir Node Configurator.exe
+C:\Users\egorbelikov\Documents\Visual Studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\bin\Release\CityAir Node Configurator.pdb
+C:\Users\egorbelikov\Documents\Visual Studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\obj\Release\CityAir_Node_Configurator.ConfiguratorForm.resources
+C:\Users\egorbelikov\Documents\Visual Studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\obj\Release\CityAir_Node_Configurator.LogoForm.resources
+C:\Users\egorbelikov\Documents\Visual Studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\obj\Release\CityAir_Node_Configurator.Properties.Resources.resources
+C:\Users\egorbelikov\Documents\Visual Studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\obj\Release\CityAir Node Configurator.csproj.GenerateResource.Cache
+C:\Users\egorbelikov\Documents\Visual Studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\obj\Release\CityAir Node Configurator.exe
+C:\Users\egorbelikov\Documents\Visual Studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\obj\Release\CityAir Node Configurator.pdb

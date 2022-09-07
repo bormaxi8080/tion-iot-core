@@ -1,0 +1,9 @@
+c:\users\egorbelikov\documents\visual studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\bin\Debug\CityAir Node Configurator.exe.config
+c:\users\egorbelikov\documents\visual studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\bin\Debug\CityAir Node Configurator.exe
+c:\users\egorbelikov\documents\visual studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\obj\Debug\CityAir_Node_Configurator.ConfiguratorForm.resources
+c:\users\egorbelikov\documents\visual studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\obj\Debug\CityAir_Node_Configurator.LogoForm.resources
+c:\users\egorbelikov\documents\visual studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\obj\Debug\CityAir_Node_Configurator.Properties.Resources.resources
+c:\users\egorbelikov\documents\visual studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\obj\Debug\CityAir Node Configurator.csproj.GenerateResource.Cache
+c:\users\egorbelikov\documents\visual studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\obj\Debug\CityAir Node Configurator.exe
+c:\users\egorbelikov\documents\visual studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\obj\Debug\CityAir Node Configurator.pdb
+c:\users\egorbelikov\documents\visual studio 2015\Projects\CityAir Node Configurator\CityAir Node Configurator\bin\Debug\CityAir Node Configurator.pdb
